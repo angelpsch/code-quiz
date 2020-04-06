@@ -11,23 +11,23 @@ var questionCont = document.getElementById('question-container');
 
 //Array of objects to hold questions & answer
 var questions = [{
-    question: "What is 2*5?",
+    question: "Q1",
     choices: [2, 5, 10, 15, 20],
     correctAnswer: 2
   }, {
-    question: "What is 3*6?",
+    question: "Q2",
     choices: [3, 6, 9, 12, 18],
     correctAnswer: 4
   }, {
-    question: "What is 8*9?",
+    question: "Q3",
     choices: [72, 99, 108, 134, 156],
     correctAnswer: 0
   }, {
-    question: "What is 1*7?",
+    question: "Q4",
     choices: [4, 5, 6, 7, 8],
     correctAnswer: 3
   }, {
-    question: "What is 8*8?",
+    question: "Q5",
     choices: [20, 30, 40, 50, 64],
     correctAnswer: 4
   }];
@@ -41,13 +41,11 @@ function quizBuild(){
         for (var j = 0; j < temp.length; j++){
             var tempTwo = [];
             tempTwo.push(temp[j]);
-            for (var a = 0; a < tempTwo.length; a++){
-            console.log(tempTwo);
+
             var ansBtn = document.createElement('button');
             ansBtn.setAttribute('class', 'ans-btn'); 
-            ansBtn.textContent = tempTwo[a]; 
+            ansBtn.textContent = temp[j]; 
             btnContainer.appendChild(ansBtn);
-            }
         }
     }
 }
