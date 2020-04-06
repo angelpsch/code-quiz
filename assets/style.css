@@ -1,0 +1,11 @@
+.ans-btn {
+    display: block;
+    background-color: #4C3973;
+    border: none;
+    font-size: large;
+    margin: 1px;
+    padding: 10px;
+    color: white;
+    font-weight: 300;
+    width: 200px;
+}
