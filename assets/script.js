@@ -11,16 +11,16 @@ var questionCont = document.getElementById('question-container');
 
 //Array of objects to hold questions & answer
 var questions = [{
-    question: "Q1",
-    choices: [2, 5, 10, 15, 20],
+    question: "1. What is the HTML tag under which one can write the JavaScript code?",
+    choices: ['<javascript>', '<scripted>', '<script>', '<js>'],
     correctAnswer: 2
   }, {
-    question: "Q2",
-    choices: [3, 6, 9, 12, 18],
-    correctAnswer: 4
+    question: "2. Choose the correct JavaScript syntax to change the content of the following HTML code: <p id='geek'>GeeksforGeeks</p>",
+    choices: ['document.getElement(“geek”).innerHTML=”I am a Geek”;', 'document.getElementById(“geek”).innerHTML=”I am a Geek”;', ' document.getId(“geek”)=”I am a Geek”;', ' document.getElementById(“geek”).innerHTML=I am a Geek;'],
+    correctAnswer: 1
   }, {
-    question: "Q3",
-    choices: [72, 99, 108, 134, 156],
+    question: "3. What is the correct syntax for referring to an external script called “geek.js”?",
+    choices: ['<script src=”geek.js”>', '<script href=”geek.js”>', '<script ref=”geek.js”>', '<script name=”geek.js”>'],
     correctAnswer: 0
   }, {
     question: "Q4",
@@ -32,8 +32,10 @@ var questions = [{
     correctAnswer: 4
   }];
 
+
 var questionsCount = 0;
 var questionArray = [];
+var correctAnswerArray = [];
 var answers = []; 
 function answersBuild(){
     for (var i = 0; i < questions.length; i++){
@@ -47,52 +49,84 @@ answersBuild();
 var answerArray = []; 
 var counter = 0;
 
-
  function quizBuild(){
+      document.getElementById('answer-container').innerHTML = ''; 
        var btnContainer = document.createElement('div');
        btnContainer.setAttribute('id', 'button-container');       
        document.getElementById('answer-container').appendChild(btnContainer);
       questionArray.push(questions[counter].question);
+      correctAnswerArray.push(questions[counter].correctAnswer);
+      console.log(correctAnswerArray[counter]); 
       questionCont.textContent = questionArray[counter];
-      console.log(questionArray); 
-      console.log(questionsCount);
       answerArray = answers[counter]; 
-      console.log(answerArray); 
        buildBtns(); 
-       console.log(counter); 
      }
  
- 
+ var wrong = false;
+ var correct = false;
+ var score = 0;
  
 function buildBtns(){
+  wrong = false; 
   var containerBtn = document.getElementById('button-container');
    for (var i = 0; i < answerArray.length; i++){
+     var temp = i + 1; 
      var ansBtn = document.createElement('button');
      ansBtn.setAttribute('id', 'ans-btn');
      ansBtn.value = i; 
-     ansBtn.textContent = answerArray[i]; 
+     ansBtn.textContent = temp + '. ' + answerArray[i]; 
     containerBtn.appendChild(ansBtn); 
     console.log(ansBtn);
     ansBtn.addEventListener('click', function(){ 
-      console.log(ansBtn.value); 
-      containerBtn.innerHTML = '';
-      quizBuild(); 
-      
+      console.log(this.value);
+      checkAnswer(this);
+      quizBuild();
     }) 
    }
-counter++;
   }
+
+  function checkAnswer(btn) {
+    var validationCont = document.getElementById('validation-container');
+    var btnValue = parseInt(btn.value); 
+    console.log(btnValue);
+    if ( btnValue !== correctAnswerArray[counter]){
+      wrong = true;
+      console.log(wrong); 
+      validationCont.innerHTML = '<p> Wrong! </p>';
+      setTimeout(function(){
+        validationCont.innerHTML = ''; 
+      }, 2000)
+         seconds = seconds - 10; 
+    } else {
+      correct = true;
+      console.log(wrong);  
+      validationCont.innerHTML = '<p> Correct! </p>';  
+      setTimeout(function(){
+        validationCont.innerHTML = ''; 
+      }, 2000)
+    }
+    counter++;
+   
+  }
+
+ 
  
 
 //Timer function 
-function countdown(seconds) {
+var seconds = 0;
+
+function countdown() {
     function tick() {
-        var counter = document.getElementById("counter");
-        counter.textContent = 'Time: ' + seconds;
+        var time = document.getElementById("counter");
+        time.textContent = 'Time: ' + seconds;
         seconds--;
-        if (seconds > 0) {
+        if (seconds >= 0) {
             setTimeout(tick, 1000);
         }
+        if (seconds < 10 ){
+          time.style.color = 'red';
+        }
+       
     }
     tick();
 }
@@ -101,7 +135,9 @@ startBtn.addEventListener('click', function (event) {
     event.preventDefault();
     startPage.style.display = 'none';
     questionPage.style.display = 'block';
-    countdown(75); 
+    seconds = 75;
+    countdown(seconds); 
+    console.log(seconds);
     quizBuild(); 
 });
  
