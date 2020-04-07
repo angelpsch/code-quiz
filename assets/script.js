@@ -32,24 +32,57 @@ var questions = [{
     correctAnswer: 4
   }];
 
-
-function quizBuild(){
+var questionsCount = 0;
+var questionArray = [];
+var answers = []; 
+function answersBuild(){
     for (var i = 0; i < questions.length; i++){
-        var temp = [];
-        questionCont.textContent = questions[i].question; 
-        temp.push(questions[i].choices);
-        for (var j = 0; j < temp.length; j++){
-            var tempTwo = [];
-            tempTwo.push(temp[j]);
+        answers.push(questions[i].choices);
+        console.log(answers); 
+    } 
+ }
+answersBuild();
 
-            var ansBtn = document.createElement('button');
-            ansBtn.setAttribute('class', 'ans-btn'); 
-            ansBtn.textContent = temp[j]; 
-            btnContainer.appendChild(ansBtn);
-        }
-    }
-}
 
+var answerArray = []; 
+var counter = 0;
+
+
+ function quizBuild(){
+       var btnContainer = document.createElement('div');
+       btnContainer.setAttribute('id', 'button-container');       
+       document.getElementById('answer-container').appendChild(btnContainer);
+      questionArray.push(questions[counter].question);
+      questionCont.textContent = questionArray[counter];
+      console.log(questionArray); 
+      console.log(questionsCount);
+      answerArray = answers[counter]; 
+      console.log(answerArray); 
+       buildBtns(); 
+       console.log(counter); 
+     }
+ 
+ 
+ 
+function buildBtns(){
+  var containerBtn = document.getElementById('button-container');
+   for (var i = 0; i < answerArray.length; i++){
+     var ansBtn = document.createElement('button');
+     ansBtn.setAttribute('id', 'ans-btn');
+     ansBtn.value = i; 
+     ansBtn.textContent = answerArray[i]; 
+    containerBtn.appendChild(ansBtn); 
+    console.log(ansBtn);
+    ansBtn.addEventListener('click', function(){ 
+      console.log(ansBtn.value); 
+      containerBtn.innerHTML = '';
+      quizBuild(); 
+      
+    }) 
+   }
+counter++;
+  }
+ 
 
 //Timer function 
 function countdown(seconds) {
@@ -68,6 +101,7 @@ startBtn.addEventListener('click', function (event) {
     event.preventDefault();
     startPage.style.display = 'none';
     questionPage.style.display = 'block';
-    countdown(75);
-    quizBuild();
+    countdown(75); 
+    quizBuild(); 
 });
+ 
