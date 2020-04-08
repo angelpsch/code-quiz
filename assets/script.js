@@ -252,7 +252,7 @@ function renderScores(){
   newScore.textContent = user.score; 
   userList.appendChild(newScore); 
 }
-return;
+
 }
 
 function initScores(){
@@ -263,6 +263,8 @@ function initScores(){
   if (savedUsers !== null) {
     users = savedUsers;
     renderScores(); 
+  } else {
+    return;
   }
   console.log(savedUsers);
   console.log(users); 
