@@ -262,10 +262,11 @@ function initScores(){
 
   if (savedUsers !== null) {
     users = savedUsers;
+    renderScores(); 
   }
   console.log(savedUsers);
   console.log(users); 
-  renderScores(); 
+  
 }
 
 //Timer function 
