@@ -194,10 +194,7 @@ var scoreHolder = document.querySelector('#score-display');
    temp = score.toString(); 
    saveScoreCont.style.display = 'block';
     questionPage.style.display = 'none'; 
-   console.log(temp); 
    scoreHolder.value = temp;
-   console.log(scoreHolder);  
-   return;
  }
  
 
@@ -207,6 +204,7 @@ var saveBtn = document.querySelector('#save-btn');
 saveBtn.addEventListener('click', function(event){
   event.preventDefault();
   saveScoreCont.style.display = 'none'; 
+  document.getElementById('score-list').style.display = 'block';
   var user = {
     name: userName.value.trim(),
     score: scoreHolder.value.trim() 
@@ -218,10 +216,9 @@ saveBtn.addEventListener('click', function(event){
   
   console.log(user);
   users.push(user);
-  document.getElementById('score-list').style.display = 'block';
+  
   storeScores();
-  renderScores();
-  return; 
+  renderScores(); 
 })
 
 function storeScores(){
@@ -235,6 +232,7 @@ function renderScores(){
   console.log(users);
   document.getElementById('score-list').innerHTML = '';
   saveScoreCont.style.display = 'none';
+  scorePage.style.display = 'block';
 
   for (var i = 0; i < users.length; i++){  
   var user = users[i];
@@ -253,9 +251,6 @@ function renderScores(){
   newName.setAttribute('class', 'col border')
   newScore.textContent = user.score; 
   userList.appendChild(newScore); 
-  console.log(user)
-  scorePage.style.display = 'block';
-  saveScoreCont.style.display = 'none'; 
 }
 return;
 }
@@ -286,9 +281,6 @@ function countdown() {
         }
         if (seconds < 10 ){
           time.style.color = 'red';
-        }
-        if (seconds <= 0){
-          saveScore();
         }
         if (endQuiz == true){
           seconds = 0; 
