@@ -14,7 +14,10 @@ var gameOver = document.getElementById('gameover');
 var saveScoreCont = document.getElementById('save-score');
 var scorePage = document.getElementById('scores'); 
 
+
+
 initScores();
+
 
 //Array of objects to hold questions & answer
 var questions = [{
@@ -82,19 +85,23 @@ var answerArray = [];
 var counter = 0;
 
  function quizBuild(){
-  checkCounter(); 
       document.getElementById('answer-container').innerHTML = ''; 
        var btnContainer = document.createElement('div');
        btnContainer.setAttribute('id', 'button-container');       
        document.getElementById('answer-container').appendChild(btnContainer);
       questionArray.push(questions[counter].question);
       correctAnswerArray.push(questions[counter].correctAnswer);
-      console.log(correctAnswerArray[counter]); 
+      console.log(questionArray[counter]); 
       questionCont.textContent = questionArray[counter];
       answerArray = answers[counter]; 
-       buildBtns();
-     
-     }
+       
+       if (endQuiz == true){
+        btnContainer.innerHTML = '';  
+        return;
+       } else { 
+         buildBtns();
+        }
+      }
  
  var wrong;
  var correct;
@@ -116,8 +123,12 @@ function buildBtns(){
     ansBtn.addEventListener('click', function(){ 
       console.log(this.value);
       checkAnswer(this);
-      quizBuild();
-      scoreTracker();
+   
+      if (endQuiz == true){
+        console.log(endQuiz);
+        containerBtn.innerHTML = ''; 
+        return; 
+      }
     }) 
    }
   }
@@ -132,26 +143,38 @@ function buildBtns(){
       validationCont.innerHTML = '<p> Wrong! </p>';
       setTimeout(function(){
         validationCont.innerHTML = ''; 
-      }, 500)
+      }, 500); 
          seconds = seconds - 10; 
     } else {
       correct = true;
       validationCont.innerHTML = '<p> Correct! </p>';  
       setTimeout(function(){
         validationCont.innerHTML = ''; 
-      }, 2000)
-      score++; 
+      }, 500); 
+      score++;
+      scoreTracker();
     }
-   
+    if (endQuiz == true){
+      return; 
+    }
+    checkCounter(); 
+    return; 
   }
 
+  var endQuiz = false;
   function checkCounter(){
-    if (counter >= 9) {
+    if (counter == questions.length-1) {
       saveScore();
+      endQuiz = true; 
+      return; 
   } else {
-    counter++;
+    counter+=1
+    console.log(questions.length);
+    endQuiz = false;
+    quizBuild(); 
   }
-  }
+    return; 
+  };
 
  function scoreTracker(){
    if (correct == true){
@@ -165,83 +188,88 @@ function buildBtns(){
  }
  
 var userName = document.querySelector('#user-name');
-var scoreHolder = document.getElementById('score-display');
+var scoreHolder = document.querySelector('#score-display');
  function saveScore() {
    var temp = '';
    temp = score.toString(); 
-   show(saveScoreCont);
-   hide(questionCont); 
-   hide(btnContainer);
-   hide(ansBtn); 
-  
-   hide(questionPage);
-   hide(validationCont);
+   saveScoreCont.style.display = 'block';
+    questionPage.style.display = 'none'; 
    console.log(temp); 
-   scoreHolder.value = temp; 
+   scoreHolder.value = temp;
+   console.log(scoreHolder);  
+   return;
+ }
+ 
 
- countdown(0); 
+ var users = []; 
 
-var users = []; 
 var saveBtn = document.querySelector('#save-btn');
 saveBtn.addEventListener('click', function(event){
   event.preventDefault();
-
+  saveScoreCont.style.display = 'none'; 
   var user = {
     name: userName.value.trim(),
     score: scoreHolder.value.trim() 
   };
 
-  if (user.firstName === "") {
-    return;
-  } else {
+  if (user.name == "") {
+    user.name = 'No Name';
+  }
   
   console.log(user);
   users.push(user);
-  userName.value = '';
-  scoreHolder.value = ''; 
-  
-  hide(saveScoreCont);
-  show(scorePage); 
-
+  document.getElementById('score-list').style.display = 'block';
   storeScores();
-  renderScores(); 
-  
-}
+  renderScores();
+  return; 
 })
-}
+
 function storeScores(){
   localStorage.setItem('users', JSON.stringify(users));
+  
 }
+
 
 function renderScores(){  
   
-  for (var i = 0; i < users.length; i++){
+  console.log(users);
+  document.getElementById('score-list').innerHTML = '';
+  saveScoreCont.style.display = 'none';
+
+  for (var i = 0; i < users.length; i++){  
   var user = users[i];
-  var horizontalList = document.createElement('ul');
-  horizontalList.setAttribute('class', 'list-group list-group-horizontal');
-  document.getElementById('scores').appendChild(horizontalList);
-  
-  var newName = document.createElement('li');
-  newName.setAttribute('class', 'list-group-item w-50');
+
+  var userList = document.createElement('div');
+  userList.setAttribute('id', 'user-list');
+  userList.setAttribute('class', 'row');
+  document.getElementById('score-list').appendChild(userList); 
+ 
+  var newName = document.createElement('div');
   newName.setAttribute('data-index', i);
   newName.textContent = user.name; 
-  horizontalList.appendChild(newName); 
-  var newScore = document.createElement('li');
-  newScore.setAttribute('class', 'list-group-item w-50');
-  newScore.setAttribute('data-index', i); 
+  userList.appendChild(newName); 
+  var newScore = document.createElement('div');
+  newScore.setAttribute('class', 'col border')
+  newName.setAttribute('class', 'col border')
   newScore.textContent = user.score; 
-  horizontalList.appendChild(newScore); 
+  userList.appendChild(newScore); 
+  console.log(user)
+  scorePage.style.display = 'block';
+  saveScoreCont.style.display = 'none'; 
 }
+return;
 }
 
 function initScores(){
-  
-  var savedUsers = JSON.parse(localStorage.getItem('user'));
+
+  var savedUsers = [];
+  savedUsers.push(JSON.parse(localStorage.getItem('user')));
 
   if (savedUsers !== null) {
     users = savedUsers;
   }
-
+  console.log(savedUsers);
+  console.log(users); 
   renderScores(); 
 }
 
@@ -262,6 +290,10 @@ function countdown() {
         if (seconds <= 0){
           saveScore();
         }
+        if (endQuiz == true){
+          seconds = 0; 
+          return; 
+        }
        
     }
     tick();
@@ -270,8 +302,7 @@ function countdown() {
 startBtn.addEventListener('click', function (event) {
     event.preventDefault();
     startPage.style.display = 'none';
-    questionPage.style.display = 'block';
-    hide(saveScoreCont); 
+    questionPage.style.display = 'block'; 
     seconds = 100;
     countdown(seconds); 
     console.log(seconds);
@@ -279,10 +310,5 @@ startBtn.addEventListener('click', function (event) {
 });
 
 
-var show = function(elem) {
-  elem.style.display = 'block';
-}
-var hide = function(elem) {
-  elem.style.display = 'none'; 
-}
+initScores();
 

@@ -38,18 +38,19 @@
 
             </div>
         </div>
-        <form id='save-score' method="POST" style="display: none; width: 30%; margin: 0 auto;">
+        <form id ='save-score' method="POST" style="display: none; width: 30%; margin: 0 auto;">
             <input id='user-name' class="form-control form-control-lg name mb-1" type="text" placeholder="Your Name">
             <div class="input-group input-group-lg mb-1">
             <div class="input-group-prepend">
                 <span class="input-group-text border-0" id="inputGroup-sizing-lg">Score: </span>
               </div>
-            <input id="score-display" class="form-control form-control-lg name border-0" type="text" name='score' placeholder="Score" readonly>
+            <input id="score-display" class="form-control form-control-lg name border-0" type="text" placeholder="Score" readonly>
         </div>
             <button id='save-btn' class='ml-3 m-auto w-50 text-center' style='border-radius: 5px;'>Save</button>
     </form>
-        <div id='scores' style="display: none; width: 30%; margin: 0 auto;">
-            <!-- <a href="#questions" id='restart-btn' class="btn btn-primary btn-lg mx-auto" role="button" style="display: none; width: 200px; background-color: #4C3973; ">Try Again</a> -->
+        <div id='scores' style="display: none;">
+            <div class="container" id='score-list' style="display: none;">
+        </div>
         </div>
      
       <script src="./assets/script.js"></script>
