@@ -262,10 +262,7 @@ function initScores(){
 
   if (savedUsers !== null) {
     users = savedUsers;
-    renderScores(); 
-  } else {
-    return;
-  }
+  } 
   console.log(savedUsers);
   console.log(users); 
   
